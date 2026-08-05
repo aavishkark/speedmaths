@@ -1,6 +1,13 @@
 import { useState } from "react";
+import { useEffect } from "react";
 export const Home = () => {
-  const [content, setContent] = useState("Welcome to the Home page!");
+  const [content, setContent] = useState("Multiples");
+  const [mode, setMode] = useState(1);
+  const [answer, setAnswer] = useState("");
+  const [number1, setNumber1] = useState(0);
+  const [number2, setNumber2] = useState(0);
+  const [result, setResult] = useState(0);
+  // const [multiples, setMultiples] = useState({min:2, max:20, number1: 1, number2:1, result:1, answer: 1});
 
   const navbarStyle = {
     display: "flex",
@@ -11,11 +18,56 @@ export const Home = () => {
     fontSize: "20px",
   }
 
-  const multiplescontent = () => {
+  const changeMode = () => {
+    setMode(mode === 1 ? 0 : 1);
+  }
+
+  const generateRandomNumbers = () => {
+    let max = 20;
+    let min = 2;
+    const randomNumber1 = Math.floor(Math.random() * (max - min + 1)) + min;
+    const randomNumber2 = Math.floor(Math.random() * (max - min + 1)) + min;
+    setNumber1(randomNumber1);
+    setNumber2(randomNumber2);
+    setResult(randomNumber1 * randomNumber2);
+    setAnswer("");
+  }
+
+  useEffect(() => {
+  if (content === "Multiples") {
+    const timer = setTimeout(() => {
+      generateRandomNumbers();
+    }, 0);
+    return () => clearTimeout(timer);
+  }
+}, [content]);
+  const handleSubmit = () => {
+    if (answer.trim() === result.toString()) {
+      alert("Correct Answer!");
+      generateRandomNumbers();
+    } else {
+      alert(`Wrong Answer! The correct answer is ${result}`);
+    }
+  }
+
+  const multiplescontent = () => {    
+
     return (
-      <div>
-        <h2>Multiples</h2>
-        <p>Content for Multiples goes here.</p>
+      <div> 
+        {mode === 1 ? (
+          <div>
+            <h2>Question to Answer</h2>
+            <p>The multiples of {number1} and {number2}</p>
+            <p>is <input type="number" onChange={(e) => setAnswer(e.target.value)} value={answer}/></p>
+            <button onClick={handleSubmit}>Submit</button>
+
+          </div>
+        ) : (
+          <div>
+            <h2>Answer to Question</h2>
+            <p>The multiples of {number1} and {number2} is {result}</p>
+          </div>
+        )}
       </div>
     );
   }
@@ -57,26 +109,7 @@ export const Home = () => {
   }
 
   const onClick = (e) => {
-    switch(e.target.innerText) {
-      case "Multiples":
-        setContent(multiplescontent());
-        break;
-      case "Cubes":
-        setContent(cubescontent());
-        break;
-      case "Squares":
-        setContent(squarescontent());
-        break;
-      case "Fractions":
-        setContent(fractionscontent());
-        break;
-      case "Percentages":
-        setContent(percentagescontent());
-        break;
-      default:
-        setContent("oops something went wrong ,please refresh the page");
-    }
-    console.log(content);
+    setContent(e.target.innerText);
   }
   return (
     <div>
@@ -86,9 +119,15 @@ export const Home = () => {
           <div onClick={onClick}>Squares</div>
           <div onClick={onClick}>Fractions</div>
           <div onClick={onClick}>Percentages</div>
+          <div onClick={()=>{changeMode()}}>{mode === 1 ? "Answer to Question" : "Question to Answer"}
+          </div>
       </div>
       <div className="content">
-        <h2>{content}</h2>
+        {content === "Multiples" && multiplescontent()}
+        {content === "Cubes" && cubescontent()}
+        {content === "Squares" && squarescontent()}
+        {content === "Fractions" && fractionscontent()}
+        {content === "Percentages" && percentagescontent()}
       </div>
     </div>
   );

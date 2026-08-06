@@ -13,21 +13,14 @@ export function FactorSandbox() {
 
   return (
     <div className="factor-sandbox-card">
-      <div className="factor-sandbox-header">
+      <div className="factor-sandbox-top">
         <div className="sandbox-title-wrap">
-          <div className="sandbox-icon-badge">
-            <IconCalculator size={18} />
-          </div>
-          <div>
-            <h3>Interactive Factor & Prime Factorization Sandbox</h3>
-            <p className="sandbox-subtitle">
-              Type any number to see the prime factorization and factor formulas calculated live.
-            </p>
-          </div>
+          <IconCalculator size={16} />
+          <h3>Factor & Prime Sandbox</h3>
         </div>
 
         <div className="sandbox-presets">
-          <span className="preset-label">Try CAT Numbers:</span>
+          <span className="preset-label">CAT Presets:</span>
           <div className="preset-buttons-row">
             {PRESET_NUMBERS.map((n) => (
               <button
@@ -44,10 +37,10 @@ export function FactorSandbox() {
       </div>
 
       <div className="sandbox-input-row">
-        <label htmlFor="factor-input" className="sandbox-input-label">
-          Enter Number (2 - 100,000):
-        </label>
         <div className="sandbox-input-box">
+          <label htmlFor="factor-input" className="sandbox-input-label">
+            Calculate N =
+          </label>
           <input
             id="factor-input"
             type="number"
@@ -58,19 +51,19 @@ export function FactorSandbox() {
             onChange={(e) => setInputVal(e.target.value)}
             placeholder="e.g. 72"
           />
-          {factorData?.isPerfectSquare && (
-            <span className="perfect-square-badge">
-              <IconSparkles size={12} /> Perfect Square (Odd Factors)
-            </span>
-          )}
         </div>
+        {factorData?.isPerfectSquare && (
+          <span className="perfect-square-badge">
+            <IconSparkles size={12} /> Perfect Square (Odd Factors)
+          </span>
+        )}
       </div>
 
       {factorData ? (
         <div className="sandbox-results-grid">
           {/* Prime Factorization Display */}
           <div className="sandbox-hero-result">
-            <span className="hero-sub">Prime Factorization Form (N = pᵃ × qᵇ × rᶜ):</span>
+            <span className="hero-sub">Prime Factorization Form (N = pᵃ × qᵇ × rᶜ)</span>
             <div className="hero-math-exp">
               <span className="num-hero">{factorData.number}</span>
               <span className="equals-sign">=</span>
@@ -81,31 +74,28 @@ export function FactorSandbox() {
           {/* 3 Metric Rule Cards */}
           <div className="factor-metrics-row">
             <div className="factor-metric-card">
-              <span className="metric-tag">Total Number of Factors</span>
-              <div className="metric-formula-title">(a+1)(b+1)...</div>
+              <span className="metric-tag">Total Factors</span>
               <div className="metric-calc-val">{factorData.totalFactorsFormula}</div>
               <span className="metric-meaning">
-                {factorData.number} has exactly <strong>{factorData.totalFactorsCount}</strong> factors.
+                <strong>{factorData.totalFactorsCount}</strong> total factors
               </span>
             </div>
 
             <div className="factor-metric-card">
-              <span className="metric-tag">Number of Prime Factors</span>
-              <div className="metric-formula-title">a + b + c...</div>
+              <span className="metric-tag">Prime Factors</span>
               <div className="metric-calc-val">{factorData.primeFactorsFormula}</div>
               <span className="metric-meaning">
-                Sum of exponents in prime factorization.
+                Sum of prime powers (<strong>{factorData.primeFactorsCount}</strong>)
               </span>
             </div>
 
             <div className="factor-metric-card">
-              <span className="metric-tag">Distinct Prime Factors</span>
-              <div className="metric-formula-title">Unique bases (p, q, r)</div>
+              <span className="metric-tag">Distinct Primes</span>
               <div className="metric-calc-val">
-                {factorData.distinctPrimes.join(", ")} ({factorData.distinctPrimesCount})
+                {factorData.distinctPrimes.join(", ")}
               </div>
               <span className="metric-meaning">
-                Distinct prime divisors: {factorData.distinctPrimes.join(" and ")}.
+                <strong>{factorData.distinctPrimesCount}</strong> distinct prime bases
               </span>
             </div>
           </div>
@@ -113,9 +103,9 @@ export function FactorSandbox() {
           {/* Factor List & Summary */}
           <div className="factor-list-section">
             <div className="factor-list-header">
-              <h4>All {factorData.totalFactorsCount} Factors of {factorData.number}:</h4>
+              <h4>All {factorData.totalFactorsCount} Factors of {factorData.number}</h4>
               <span className="sum-tag">
-                Sum of Factors = <strong>{factorData.sumOfFactors.toLocaleString()}</strong>
+                Sum = <strong>{factorData.sumOfFactors.toLocaleString()}</strong>
               </span>
             </div>
             <div className="factor-pills-wrap">
@@ -135,3 +125,4 @@ export function FactorSandbox() {
     </div>
   );
 }
+

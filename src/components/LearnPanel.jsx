@@ -49,7 +49,8 @@ export function LearnPanel({ topic }) {
   const [revealedCells, setRevealedCells] = useState({});
   const [spottedCell, setSpottedCell] = useState(null);
   const [hoveredCell, setHoveredCell] = useState(null);
-  const [showTricks, setShowTricks] = useState(true);
+  const [showTricks, setShowTricks] = useState(false);
+  const [showRule, setShowRule] = useState(false);
   const [starredFacts, setStarredFacts] = useState(loadStarredFacts);
 
   // Sync if parent topic changes
@@ -65,17 +66,6 @@ export function LearnPanel({ topic }) {
     () => Object.keys(starredFacts).filter((k) => starredFacts[k]).length,
     [starredFacts],
   );
-
-  const TABLE_TABS = [
-    { id: "all", label: "All Tables", badge: "8 Tables" },
-    { id: "multiplication", label: "Multiplication", badge: "1-20 & Multiples" },
-    { id: "squares", label: "Squares", badge: "1² - 30²" },
-    { id: "cubes", label: "Cubes", badge: "1³ - 15³" },
-    { id: "powers", label: "Powers", badge: "2, 3, 5" },
-    { id: "fractions", label: "Fractions", badge: "1/1 - 1/20" },
-    { id: "factors", label: "Factors", badge: "Sandbox & Rules" },
-    { id: "starred", label: "⭐ My Starred Facts", badge: `${starredCount} saved` },
-  ];
 
   const normalizedFilter = filterText.toLowerCase().trim();
 
@@ -146,87 +136,7 @@ export function LearnPanel({ topic }) {
 
   return (
     <section className="learn-panel" aria-label="Learn Tables Workspace">
-      {/* Table Navigation Bar: All Tables vs Specific Table vs Starred */}
-      <div className="learn-tabs-nav">
-        {TABLE_TABS.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            className={`learn-tab-btn ${activeTab === tab.id ? "active" : ""}`}
-            onClick={() => {
-              setActiveTab(tab.id);
-              setFilterText("");
-            }}
-          >
-            <span className="learn-tab-title">{tab.label}</span>
-            <span className="learn-tab-badge">{tab.badge}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Protocol Banner */}
-      {currentTopicObj.protocol && activeTab !== "starred" && (
-        <div className="blueprint-protocol-card">
-          <div className="protocol-header">
-            <span className="protocol-badge">
-              <IconLightning size={14} />
-              <span>{currentTopicObj.blueprintPage || "CAT Speed Math Blueprint"}</span>
-            </span>
-            <span className="protocol-label">
-              {activeTab === "all" ? "Blueprint Mastery Rule" : "Protocol & Memorization Rule"}
-            </span>
-          </div>
-          <p className="protocol-text">
-            <strong>Rule: </strong>
-            {currentTopicObj.protocol}
-          </p>
-        </div>
-      )}
-
-      {/* Mental Math Shortcuts & Memorization Hacks Accordion */}
-      {currentTricks && currentTricks.length > 0 && activeTab !== "starred" && (
-        <div className="mental-tricks-accordion">
-          <button
-            type="button"
-            className="tricks-header-toggle"
-            onClick={() => setShowTricks(!showTricks)}
-          >
-            <div className="tricks-header-title">
-              <span className="tricks-icon-pill">
-                <IconBulb size={15} />
-              </span>
-              <span>Mental Shortcuts & Memorization Hacks</span>
-              <span className="tricks-count-badge">{currentTricks.length} hacks</span>
-            </div>
-            <span className={`accordion-chevron ${showTricks ? "open" : ""}`}>
-              <IconChevronDown size={16} />
-            </span>
-          </button>
-
-          {showTricks && (
-            <div className="tricks-content-grid">
-              {currentTricks.map((trick) => (
-                <div className="trick-card" key={trick.title}>
-                  <div className="trick-card-top">
-                    <span className="trick-title">{trick.title}</span>
-                    <span className="trick-badge">{trick.badge}</span>
-                  </div>
-                  <p className="trick-rule">
-                    <strong>Shortcut: </strong>
-                    {trick.rule}
-                  </p>
-                  <div className="trick-example-box">
-                    <span className="trick-ex-label">Example: </span>
-                    <span className="trick-ex-content">{trick.example}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Interactive Toolbar */}
+      {/* Streamlined Clean Toolbar */}
       <div className="learn-toolbar-row">
         <div className="learn-filter-bar">
           <input
@@ -237,7 +147,7 @@ export function LearnPanel({ topic }) {
                 ? "Search across all tables, formulas, or numbers..."
                 : activeTab === "starred"
                 ? "Filter starred facts..."
-                : `Filter ${currentTopicObj.name} values or formulas...`
+                : `Search ${currentTopicObj.name} values or formulas...`
             }
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
@@ -261,8 +171,8 @@ export function LearnPanel({ topic }) {
             onClick={() => setViewMode("table")}
             title="Standard Tables & Matrices"
           >
-            <IconGrid size={14} />
-            <span>Table</span>
+            <IconGrid size={13} />
+            <span>Grid</span>
           </button>
 
           {(activeTab === "fractions" || activeTab === "all") && (
@@ -272,7 +182,7 @@ export function LearnPanel({ topic }) {
               onClick={() => setViewMode("family")}
               title="Fraction Families with Visual % Bars"
             >
-              <IconLayers size={14} />
+              <IconLayers size={13} />
               <span>Families</span>
             </button>
           )}
@@ -283,12 +193,37 @@ export function LearnPanel({ topic }) {
             onClick={() => setViewMode("flashcards")}
             title="Interactive Flashcards Deck"
           >
-            <IconSparkles size={14} />
-            <span>Flashcards</span>
+            <IconSparkles size={13} />
+            <span>Cards</span>
           </button>
         </div>
 
+        {/* Progressive Disclosure Triggers & Action Buttons */}
         <div className="learn-action-buttons">
+          {currentTricks && currentTricks.length > 0 && activeTab !== "starred" && (
+            <button
+              type="button"
+              className={`toolbar-pill-btn ${showTricks ? "active" : ""}`}
+              onClick={() => setShowTricks(!showTricks)}
+              title="View Mental Math Shortcuts & Tricks"
+            >
+              <IconBulb size={13} />
+              <span>Tricks ({currentTricks.length})</span>
+            </button>
+          )}
+
+          {currentTopicObj.protocol && activeTab !== "starred" && (
+            <button
+              type="button"
+              className={`toolbar-pill-btn ${showRule ? "active" : ""}`}
+              onClick={() => setShowRule(!showRule)}
+              title="View Blueprint Memorization Protocol"
+            >
+              <IconLightning size={13} />
+              <span>Rule</span>
+            </button>
+          )}
+
           <button
             className={`toolbar-toggle-btn ${maskAnswers ? "active" : ""}`}
             onClick={() => {
@@ -298,8 +233,8 @@ export function LearnPanel({ topic }) {
             type="button"
             title="Hide values so you can test your recall directly on the tables"
           >
-            <IconTarget size={14} />
-            <span>{maskAnswers ? "Revealing Masked" : "Mask (Self-Quiz)"}</span>
+            <IconTarget size={13} />
+            <span>{maskAnswers ? "Masked" : "Quiz Mask"}</span>
           </button>
 
           <button
@@ -308,11 +243,50 @@ export function LearnPanel({ topic }) {
             type="button"
             title="Spot a random item for rapid flash recall"
           >
-            <IconFlame size={14} />
-            <span>Spot Random Cell</span>
+            <IconFlame size={13} />
+            <span>Spotter</span>
           </button>
         </div>
       </div>
+
+      {/* Expandable Protocol Rule Banner */}
+      {showRule && currentTopicObj.protocol && activeTab !== "starred" && (
+        <div className="blueprint-protocol-card compact">
+          <div className="protocol-header">
+            <span className="protocol-badge">
+              <IconLightning size={13} />
+              <span>{currentTopicObj.blueprintPage || "CAT Speed Math Blueprint"}</span>
+            </span>
+            <span className="protocol-label">Memorization Rule</span>
+          </div>
+          <p className="protocol-text">{currentTopicObj.protocol}</p>
+        </div>
+      )}
+
+      {/* Expandable Mental Math Shortcuts Drawer */}
+      {showTricks && currentTricks && currentTricks.length > 0 && activeTab !== "starred" && (
+        <div className="mental-tricks-drawer">
+          <div className="tricks-content-grid">
+            {currentTricks.map((trick) => (
+              <div className="trick-card" key={trick.title}>
+                <div className="trick-card-top">
+                  <span className="trick-title">{trick.title}</span>
+                  <span className="trick-badge">{trick.badge}</span>
+                </div>
+                <p className="trick-rule">
+                  <strong>Shortcut: </strong>
+                  {trick.rule}
+                </p>
+                <div className="trick-example-box">
+                  <span className="trick-ex-label">Example: </span>
+                  <span className="trick-ex-content">{trick.example}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
 
       {/* Spotted Cell Flash Banner */}
       {spottedCell && (

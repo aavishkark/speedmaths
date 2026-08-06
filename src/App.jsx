@@ -436,6 +436,8 @@ export const Home = () => {
         activeUser={activeUser}
         isAuthenticated={isAuthenticated}
         levelInfo={levelInfo}
+        mode={mode}
+        onModeChange={handleModeChange}
         onOpenAuth={() => setAuthModalOpen(true)}
         onOpenProfile={() => setProfileModalOpen(true)}
         onOpenBlueprint={() => setBlueprintModalOpen(true)}
@@ -452,13 +454,8 @@ export const Home = () => {
         topics={TOPICS}
       />
 
-      <main className="workspace">
+      <main className={`workspace ${mode === "learn" ? "learn-mode-active" : ""}`}>
         <section className="trainer-panel">
-          <div className="trainer-topline">
-            <span className="topic-summary-text">{topic.summary}</span>
-            <ModeTabs mode={mode} onModeChange={handleModeChange} />
-          </div>
-
           {mode === "learn" ? (
             <LearnPanel topic={topic} />
           ) : (
@@ -479,22 +476,25 @@ export const Home = () => {
           )}
         </section>
 
-        <MemoryPanel
-          isReviewing={isReviewing}
-          missedFacts={missedFacts}
-          mode={mode}
-          onExitReview={exitReview}
-          onResetStats={() => resetTopicStats(selectedTopicId)}
-          onSelectSprintDuration={setSprintDuration}
-          onStartReview={startReview}
-          onStartSprint={startSprint}
-          onStopSprint={stopSprint}
-          secondsLeft={secondsLeft}
-          sprintActive={sprintActive}
-          sprintDuration={sprintDuration}
-          sprintScore={sprintScore}
-          stats={topicStats}
-        />
+
+        {mode !== "learn" && (
+          <MemoryPanel
+            isReviewing={isReviewing}
+            missedFacts={missedFacts}
+            mode={mode}
+            onExitReview={exitReview}
+            onResetStats={() => resetTopicStats(selectedTopicId)}
+            onSelectSprintDuration={setSprintDuration}
+            onStartReview={startReview}
+            onStartSprint={startSprint}
+            onStopSprint={stopSprint}
+            secondsLeft={secondsLeft}
+            sprintActive={sprintActive}
+            sprintDuration={sprintDuration}
+            sprintScore={sprintScore}
+            stats={topicStats}
+          />
+        )}
       </main>
 
       {sprintSummary?.isOpen && (

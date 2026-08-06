@@ -375,7 +375,17 @@ const factorFacts = [
   },
 ];
 
+const foundationGridRows = range(1, 10).map((left) => [
+  left,
+  ...range(1, 10).map((right) => left * right),
+]);
+
 const multiplicationGridRows = range(11, 20).map((left) => [
+  left,
+  ...range(1, 10).map((right) => left * right),
+]);
+
+const full1to20GridRows = range(1, 20).map((left) => [
   left,
   ...range(1, 10).map((right) => left * right),
 ]);
@@ -411,6 +421,15 @@ const topicBase = [
         headers: ["×", ...range(1, 10)],
         rows: multiplicationGridRows,
         dense: true,
+        gridType: "11-20",
+      },
+      {
+        title: "Foundation 1 to 10 Grid",
+        type: "grid",
+        headers: ["×", ...range(1, 10)],
+        rows: foundationGridRows,
+        dense: true,
+        gridType: "1-10",
       },
       {
         title: "2. High-Yield Higher Multiples",
@@ -522,6 +541,17 @@ const topicBase = [
 
 export const ALL_FACTS = topicBase.flatMap((topic) => topic.facts);
 
+export const ALL_LEARN_SECTIONS = topicBase.flatMap((topic) =>
+  topic.learnSections.map((section) => ({
+    ...section,
+    topicId: topic.id,
+    topicName: topic.name,
+    topicAccent: topic.accent,
+    blueprintPage: topic.blueprintPage,
+    protocol: topic.protocol,
+  })),
+);
+
 export const TOPICS = [
   ...topicBase,
   {
@@ -534,17 +564,7 @@ export const TOPICS = [
       "Mixed drills randomly select across all 6 blueprint modules. Train daily to achieve subconscious recall under time pressure.",
     summary: "All recall facts from the speed-math blueprint.",
     facts: ALL_FACTS,
-    learnSections: [
-      {
-        title: "Complete Blueprint Pool",
-        type: "mixedSummary",
-        rows: topicBase.map((topic) => [
-          topic.name,
-          topic.blueprintPage,
-          `${topic.facts.length} facts`,
-        ]),
-      },
-    ],
+    learnSections: ALL_LEARN_SECTIONS,
   },
 ];
 

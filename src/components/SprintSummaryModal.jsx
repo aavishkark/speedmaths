@@ -1,3 +1,5 @@
+import { IconLightning, IconTarget, IconTimer, IconTrophy } from "./Icons";
+
 export function SprintSummaryModal({
   duration,
   score,
@@ -15,7 +17,9 @@ export function SprintSummaryModal({
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <div className="modal-trophy">{isNewBest ? "🏆" : "⏱️"}</div>
+          <div className="modal-icon-badge">
+            {isNewBest ? <IconTrophy size={36} /> : <IconTimer size={36} />}
+          </div>
           <h2>{isNewBest ? "New Personal Best!" : "Sprint Complete!"}</h2>
           <p className="modal-subtitle">{duration}s Challenge</p>
         </div>
@@ -46,11 +50,13 @@ export function SprintSummaryModal({
 
         <div className="modal-actions">
           <button className="primary-action modal-btn" onClick={onPlayAgain} type="button">
-            ⚡ Play Again
+            <IconLightning size={16} />
+            <span>Play Again</span>
           </button>
           {hasMisses && (
             <button className="ghost-action modal-btn" onClick={onReviewMisses} type="button">
-              🎯 Review Misses
+              <IconTarget size={16} />
+              <span>Review Misses</span>
             </button>
           )}
           <button className="text-action modal-btn" onClick={onClose} type="button">

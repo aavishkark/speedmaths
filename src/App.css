@@ -988,9 +988,22 @@ tr:last-child td {
   to { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-.modal-trophy {
-  font-size: 3rem;
-  margin-bottom: 8px;
+.modal-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.sprint-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .modal-header h2 {

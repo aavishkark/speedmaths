@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { IconCheck, IconCross, IconFlame, IconLightning, IconReverse, IconTarget, IconTimer } from "./Icons";
 
 const getQuestion = (fact, direction) =>
   direction === "reverse" ? fact.reverseQuestion : fact.question;
@@ -56,14 +57,29 @@ export function QuizPanel({
         <div className="quiz-meta-tags">
           <span className="meta-tag group-tag">{fact.group}</span>
           <span className={`meta-tag dir-tag ${direction === "reverse" ? "reverse" : ""}`}>
-            {direction === "reverse" ? "🔄 Reverse" : "⚡ Direct"}
+            {direction === "reverse" ? (
+              <>
+                <IconReverse size={12} className="tag-icon" />
+                <span>Reverse</span>
+              </>
+            ) : (
+              <>
+                <IconLightning size={12} className="tag-icon" />
+                <span>Direct</span>
+              </>
+            )}
           </span>
-          {isReviewing && <span className="meta-tag review-tag">🎯 Weak Fact Review</span>}
+          {isReviewing && (
+            <span className="meta-tag review-tag">
+              <IconTarget size={12} className="tag-icon" />
+              <span>Weak Fact Review</span>
+            </span>
+          )}
         </div>
 
         {streak >= 3 && (
           <div className="streak-badge-pill" title={`${streak} in a row!`}>
-            <span className="flame-icon">🔥</span>
+            <IconFlame size={14} className="flame-icon" />
             <span>{streak} Streak</span>
           </div>
         )}
@@ -79,7 +95,8 @@ export function QuizPanel({
             Test your speed and accuracy under time pressure. Answer as many as you can before the clock runs out!
           </p>
           <button className="primary-action pulse-btn" onClick={onStartSprint} type="button">
-            <span>⚡ Start Sprint</span>
+            <IconLightning size={16} />
+            <span>Start Sprint</span>
           </button>
         </div>
       ) : (
@@ -119,7 +136,13 @@ export function QuizPanel({
       {feedback && (
         <div className={`feedback-alert ${feedback.status}`} aria-live="polite">
           <div className="feedback-icon">
-            {feedback.status === "correct" ? "✓" : feedback.status === "wrong" ? "✗" : "⏱️"}
+            {feedback.status === "correct" ? (
+              <IconCheck size={18} />
+            ) : feedback.status === "wrong" ? (
+              <IconCross size={18} />
+            ) : (
+              <IconTimer size={18} />
+            )}
           </div>
           <div className="feedback-content">
             <strong>{feedback.title}</strong>

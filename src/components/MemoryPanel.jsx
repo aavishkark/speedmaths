@@ -1,4 +1,5 @@
 import { StatCell } from "./StatCell";
+import { IconCheck, IconFlame, IconTarget, IconTimer } from "./Icons";
 
 const SPRINT_DURATIONS = [30, 60, 120];
 
@@ -43,7 +44,7 @@ export function MemoryPanel({
         <StatCell
           label="Streak"
           value={stats?.streak ?? 0}
-          icon={stats?.streak >= 3 ? "🔥" : undefined}
+          icon={stats?.streak >= 3 ? <IconFlame size={14} /> : undefined}
           highlight={stats?.streak >= 5}
         />
         <StatCell label="Best Streak" value={stats?.bestStreak ?? 0} />
@@ -52,7 +53,10 @@ export function MemoryPanel({
       {mode === "sprint" && (
         <div className="sprint-box">
           <div className="sprint-box-header">
-            <span className="sprint-label">⏱️ Timed Sprint</span>
+            <div className="sprint-label-row">
+              <IconTimer size={16} />
+              <span className="sprint-label">Timed Sprint</span>
+            </div>
             {!sprintActive && (
               <div className="duration-selector">
                 {SPRINT_DURATIONS.map((dur) => (
@@ -120,7 +124,7 @@ export function MemoryPanel({
       <div className="review-box">
         <div className="review-heading">
           <div className="review-title">
-            <span className="target-icon">🎯</span>
+            <IconTarget size={16} />
             <span>Weak Facts</span>
           </div>
           <span className="miss-count-badge">{missedFacts.length}</span>
@@ -135,7 +139,7 @@ export function MemoryPanel({
             ))
           ) : (
             <div className="clean-slate">
-              <span className="check-icon">✓</span>
+              <IconCheck size={14} />
               <span>All clear! No weak facts.</span>
             </div>
           )}

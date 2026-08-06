@@ -8,9 +8,12 @@ import { LearnPanel } from "./components/LearnPanel";
 import { QuizPanel } from "./components/QuizPanel";
 import { MemoryPanel } from "./components/MemoryPanel";
 import { SprintSummaryModal } from "./components/SprintSummaryModal";
+import { ProfileModal } from "./components/ProfileModal";
+import { AchievementToast } from "./components/AchievementToast";
 import { Confetti } from "./components/Confetti";
 import { useSoundEffects } from "./hooks/useSoundEffects";
-import { useSpeedMathStats, EMPTY_STATS } from "./hooks/useSpeedMathStats";
+import { useUserProfile } from "./hooks/useUserProfile";
+import { EMPTY_STATS } from "./hooks/useSpeedMathStats";
 
 const INITIAL_TOPIC_ID = "multiplication";
 const DEFAULT_SPRINT_DURATION = 60;
@@ -102,13 +105,25 @@ export const Home = () => {
     playFanfare,
   } = useSoundEffects();
 
-  // Stats state
+  // User Profile & Multi-account state
   const {
-    stats,
+    profiles,
+    activeUser,
+    levelInfo,
+    newlyUnlocked,
+    dismissToast,
+    switchUser,
+    createUser,
+    updateActiveUser,
+    deleteUser,
     recordAttempt,
     recordSprintResult,
     resetTopicStats,
-  } = useSpeedMathStats();
+    exportProfiles,
+    importProfiles,
+  } = useUserProfile();
+
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   // App drill state
   const [selectedTopicId, setSelectedTopicId] = useState(INITIAL_TOPIC_ID);
@@ -139,7 +154,7 @@ export const Home = () => {
     [selectedTopicId],
   );
 
-  const topicStats = stats[selectedTopicId] ?? EMPTY_STATS;
+  const topicStats = activeUser?.stats?.[selectedTopicId] ?? EMPTY_STATS;
   const missedFactIds = topicStats.missedFactIds ?? EMPTY_STATS.missedFactIds;
 
   const missedFacts = useMemo(
@@ -298,7 +313,7 @@ export const Home = () => {
     if (isCorrect) {
       const nextStreak = (topicStats.streak ?? 0) + 1;
       if (nextStreak % 10 === 0 || nextStreak === 5 || nextStreak === 25) {
-        playStreak(nextStreak);
+        playStreak();
         setConfettiActive(true);
       } else {
         playCorrect();
@@ -397,7 +412,15 @@ export const Home = () => {
     >
       <Confetti active={confettiActive} onComplete={() => setConfettiActive(false)} />
 
+      <AchievementToast
+        achievement={newlyUnlocked}
+        onDismiss={dismissToast}
+      />
+
       <Header
+        activeUser={activeUser}
+        levelInfo={levelInfo}
+        onOpenProfile={() => setProfileModalOpen(true)}
         onToggleSound={toggleSound}
         onToggleTheme={toggleTheme}
         soundEnabled={soundEnabled}
@@ -473,6 +496,21 @@ export const Home = () => {
             startReview();
           }}
           score={sprintSummary.score}
+        />
+      )}
+
+      {profileModalOpen && (
+        <ProfileModal
+          activeUser={activeUser}
+          createUser={createUser}
+          deleteUser={deleteUser}
+          exportProfiles={exportProfiles}
+          importProfiles={importProfiles}
+          levelInfo={levelInfo}
+          onClose={() => setProfileModalOpen(false)}
+          profiles={profiles}
+          switchUser={switchUser}
+          updateActiveUser={updateActiveUser}
         />
       )}
     </div>

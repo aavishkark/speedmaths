@@ -1,9 +1,14 @@
+import { getInitials } from "../hooks/useUserProfile";
+
 export function Header({
   topic,
   theme,
   onToggleTheme,
   soundEnabled,
   onToggleSound,
+  activeUser,
+  levelInfo,
+  onOpenProfile,
 }) {
   return (
     <header className="app-header">
@@ -24,6 +29,28 @@ export function Header({
           <strong>{topic.facts.length}</strong>
           <span>facts</span>
         </div>
+
+        {/* User Profile Trigger Button */}
+        {activeUser && (
+          <button
+            className="user-profile-pill-btn"
+            onClick={onOpenProfile}
+            type="button"
+            aria-label={`Open profile for ${activeUser.name}`}
+            title="Open Profile & Analytics"
+          >
+            <div
+              className="user-avatar-monogram header-avatar"
+              style={{ "--user-color": activeUser.color }}
+            >
+              {getInitials(activeUser.name)}
+            </div>
+            <div className="user-pill-info">
+              <span className="user-pill-name">{activeUser.name}</span>
+              <span className="user-pill-level">Lvl {levelInfo?.level || 1}</span>
+            </div>
+          </button>
+        )}
 
         <button
           className="icon-button"

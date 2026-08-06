@@ -3063,4 +3063,813 @@ tr:last-child td {
   }
 }
 
+/* ==========================================================================
+   VIEW MODE SELECTOR & MENTAL SHORTCUTS ACCORDION
+   ========================================================================== */
+
+.view-mode-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+}
+
+.view-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.view-mode-btn:hover {
+  color: var(--text-main);
+  background: var(--panel-border-subtle);
+}
+
+.view-mode-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Mental Tricks Accordion */
+.mental-tricks-accordion {
+  background: color-mix(in srgb, #f59e0b 6%, var(--panel-card));
+  border: 1px solid color-mix(in srgb, #f59e0b 28%, transparent);
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.tricks-header-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+  text-align: left;
+  transition: var(--transition);
+}
+
+.tricks-header-toggle:hover {
+  background: color-mix(in srgb, #f59e0b 12%, transparent);
+}
+
+.tricks-header-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.tricks-icon-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.tricks-count-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(245, 158, 11, 0.2);
+  color: #d97706;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.accordion-chevron {
+  color: var(--text-muted);
+  transition: transform 0.25s ease;
+}
+
+.accordion-chevron.open {
+  transform: rotate(180deg);
+}
+
+.tricks-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  padding: 0 16px 16px 16px;
+}
+
+.trick-card {
+  background: var(--panel-card);
+  border: 1px solid color-mix(in srgb, #f59e0b 20%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.trick-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.trick-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.trick-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-border-subtle);
+  color: #d97706;
+}
+
+.trick-rule {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.trick-example-box {
+  background: var(--panel-border-subtle);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  margin-top: 2px;
+}
+
+.trick-ex-label {
+  font-weight: 800;
+  color: #d97706;
+}
+
+/* ==========================================================================
+   CROSSHAIR HOVER EFFECTS ON MATRICES
+   ========================================================================== */
+
+.crosshair-col-head {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 -2px 0 #ffffff;
+  transition: background 0.15s ease;
+}
+
+.crosshair-row-head {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  box-shadow: inset -2px 0 0 #ffffff;
+  transition: background 0.15s ease;
+}
+
+.crosshair-row-track td {
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+td.crosshair-col-track {
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+td.crosshair-active-cell {
+  background: color-mix(in srgb, var(--accent) 22%, var(--panel-card)) !important;
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  font-weight: 900 !important;
+  transform: scale(1.04);
+  z-index: 2;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.matrix-cell-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cell-star-icon {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: transparent;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.matrix-cell:hover .cell-star-icon,
+.cell-star-icon.active {
+  opacity: 1;
+}
+
+.cell-star-icon.active {
+  color: #f59e0b;
+}
+
+/* ==========================================================================
+   FRACTION FAMILIES VIEW (Visual Bar & Pattern Groups)
+   ========================================================================== */
+
+.fraction-families-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.families-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.family-card {
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: var(--transition);
+}
+
+.family-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.family-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 12px;
+}
+
+.family-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.family-mnemonic {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.family-tag-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.family-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.family-fraction-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-border-subtle);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.family-fraction-row:hover {
+  background: color-mix(in srgb, var(--accent) 10%, var(--panel-card));
+  transform: translateX(2px);
+}
+
+.fraction-label-col {
+  width: 50px;
+  flex-shrink: 0;
+}
+
+.fraction-big-pill {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.fraction-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fraction-val-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.86rem;
+}
+
+.fraction-pct-val {
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.fraction-dec-val {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.percent-bar-track {
+  width: 100%;
+  height: 6px;
+  background: color-mix(in srgb, var(--text-muted) 20%, transparent);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.percent-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #f59e0b);
+  border-radius: var(--radius-pill);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.star-mini-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.star-mini-btn:hover,
+.star-mini-btn.active {
+  color: #f59e0b;
+}
+
+/* ==========================================================================
+   FACTOR SANDBOX (Interactive Prime & Factors Calculator)
+   ========================================================================== */
+
+.factor-sandbox-card {
+  background: color-mix(in srgb, #2f6f3e 8%, var(--panel-card));
+  border: 1px solid color-mix(in srgb, #2f6f3e 30%, transparent);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.factor-sandbox-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sandbox-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sandbox-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: #2f6f3e;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sandbox-title-wrap h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.sandbox-subtitle {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.sandbox-presets {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.preset-buttons-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, #2f6f3e 35%, transparent);
+  background: var(--panel-card);
+  color: var(--text-main);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.preset-btn:hover,
+.preset-btn.active {
+  background: #2f6f3e;
+  color: #ffffff;
+  border-color: #2f6f3e;
+}
+
+.sandbox-input-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sandbox-input-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.sandbox-input-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.factor-number-input {
+  width: 140px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid #2f6f3e;
+  background: var(--panel-card);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 800;
+  outline: none;
+}
+
+.perfect-square-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: #f59e0b;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.sandbox-results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sandbox-hero-result {
+  background: var(--panel-card);
+  border: 1px solid color-mix(in srgb, #2f6f3e 25%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  text-align: center;
+}
+
+.hero-sub {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hero-math-exp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.num-hero {
+  color: #2f6f3e;
+  font-family: var(--font-mono);
+}
+
+.equals-sign {
+  color: var(--text-muted);
+}
+
+.prime-hero-val {
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.factor-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.factor-metric-card {
+  background: var(--panel-card);
+  border: 1px solid color-mix(in srgb, #2f6f3e 20%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-tag {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #2f6f3e;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metric-formula-title {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.metric-calc-val {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.metric-meaning {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.factor-list-section {
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+}
+
+.factor-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.factor-list-header h4 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.sum-tag {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.factor-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.factor-pill {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-border-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--panel-border);
+}
+
+.sandbox-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   FLASHCARDS DECK & STARRED DECK STYLES
+   ========================================================================== */
+
+.flashcards-deck-section,
+.starred-deck-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.flashcards-deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.flashcard-item {
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.flashcard-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.flashcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flashcard-topic {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.star-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 3px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.star-toggle-btn.active,
+.star-toggle-btn:hover {
+  color: #f59e0b;
+}
+
+.flashcard-question {
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-main);
+  margin: 12px 0;
+}
+
+.flashcard-answer-box {
+  background: var(--panel-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.flashcard-answer-box.masked {
+  border: 1px dashed var(--panel-border);
+}
+
+.flashcard-answer-box.masked:hover {
+  background: color-mix(in srgb, var(--accent) 15%, var(--panel-card));
+  border-color: var(--accent);
+}
+
+.answer-text {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.reveal-hint {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.starred-empty-card {
+  background: var(--panel-card);
+  border: 2px dashed var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 40px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 480px;
+  margin: 20px auto;
+}
+
+.empty-star-icon {
+  color: #f59e0b;
+}
+
+.starred-empty-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.starred-empty-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+
 

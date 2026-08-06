@@ -42,3 +42,41 @@ button:disabled {
 ::selection {
   background: color-mix(in srgb, var(--accent, #4f46e5) 30%, transparent);
 }
+
+/* ==========================================================================
+   GLOBAL MODERN ULTRA-SLEEK SCROLLBAR
+   ========================================================================== */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted, #94a3b8) 32%, transparent) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-muted, #94a3b8) 30%, transparent);
+  border-radius: 9999px;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent, #4f46e5) 70%, var(--text-muted, #94a3b8));
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+

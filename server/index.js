@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
@@ -47,6 +48,18 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/sprint", sprintRoutes);
+
+// Serve static frontend in production if built
+const distPath = path.join(__dirname, "../dist");
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get("*", (req, res) => {
+    // Only serve index.html for non-API routes
+    if (!req.path.startsWith("/api")) {
+      res.sendFile(path.join(distPath, "index.html"));
+    }
+  });
+}
 
 // Error handling middleware
 app.use(errorHandler);

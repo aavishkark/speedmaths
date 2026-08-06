@@ -10,6 +10,7 @@ import { MemoryPanel } from "./components/MemoryPanel";
 import { SprintSummaryModal } from "./components/SprintSummaryModal";
 import { ProfileModal } from "./components/ProfileModal";
 import { AuthModal } from "./components/AuthModal";
+import { BlueprintModal } from "./components/BlueprintModal";
 import { AchievementToast } from "./components/AchievementToast";
 import { Confetti } from "./components/Confetti";
 import { useSoundEffects } from "./hooks/useSoundEffects";
@@ -130,6 +131,7 @@ export const Home = () => {
 
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [blueprintModalOpen, setBlueprintModalOpen] = useState(false);
 
   // App drill state
   const [selectedTopicId, setSelectedTopicId] = useState(INITIAL_TOPIC_ID);
@@ -436,6 +438,7 @@ export const Home = () => {
         levelInfo={levelInfo}
         onOpenAuth={() => setAuthModalOpen(true)}
         onOpenProfile={() => setProfileModalOpen(true)}
+        onOpenBlueprint={() => setBlueprintModalOpen(true)}
         onToggleSound={toggleSound}
         onToggleTheme={toggleTheme}
         soundEnabled={soundEnabled}
@@ -538,6 +541,11 @@ export const Home = () => {
         onContinueGuest={() => setAuthModalOpen(false)}
         onLogin={loginCloud}
         onRegister={registerCloud}
+      />
+
+      <BlueprintModal
+        isOpen={blueprintModalOpen}
+        onClose={() => setBlueprintModalOpen(false)}
       />
     </div>
   );

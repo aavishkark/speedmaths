@@ -2076,3 +2076,931 @@ tr:last-child td {
   color: var(--text-main);
 }
 
+/* ==========================================================================
+   CAT SPEED MATH BLUEPRINT & ENHANCED LEARN STYLES
+   ========================================================================== */
+
+/* Header Blueprint Button */
+.blueprint-header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(228, 87, 46, 0.15), rgba(245, 158, 11, 0.15));
+  border: 1px solid rgba(228, 87, 46, 0.4);
+  color: #e4572e;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.blueprint-header-btn:hover {
+  background: #e4572e;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(228, 87, 46, 0.3);
+}
+
+/* Protocol Callout Card */
+.blueprint-protocol-card {
+  background: color-mix(in srgb, var(--accent) 8%, var(--panel-card));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.protocol-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.protocol-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.protocol-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.protocol-text {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-main);
+  margin: 0;
+}
+
+/* Learn Toolbar */
+.learn-toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.learn-action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toolbar-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-border);
+  background: var(--panel-card);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.toolbar-toggle-btn:hover {
+  background: var(--panel-border-subtle);
+  border-color: var(--accent);
+}
+
+.toolbar-toggle-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.toolbar-toggle-btn.spotter-btn {
+  background: color-mix(in srgb, #e4572e 12%, var(--panel-card));
+  color: #e4572e;
+  border-color: rgba(228, 87, 46, 0.35);
+}
+
+.toolbar-toggle-btn.spotter-btn:hover {
+  background: #e4572e;
+  color: #ffffff;
+}
+
+/* Spotted Rapid Flash Banner */
+.spotted-flash-banner {
+  background: linear-gradient(135deg, rgba(228, 87, 46, 0.15), rgba(245, 158, 11, 0.15));
+  border: 2px solid #e4572e;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  animation: modal-fade-in 200ms ease-out;
+}
+
+.spotted-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.spotted-tag {
+  background: #e4572e;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.spotted-prompt {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.spotted-answer-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spotted-val {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #e4572e;
+  background: var(--panel-card);
+  padding: 4px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(228, 87, 46, 0.4);
+}
+
+.reveal-btn {
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.next-spot-btn {
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+/* Masked Cell & Pill Effects for Recall Drill */
+.masked-cell {
+  background: var(--panel-border-subtle) !important;
+  color: transparent !important;
+  user-select: none;
+  position: relative;
+  cursor: pointer !important;
+  transition: var(--transition);
+}
+
+.masked-cell::after {
+  content: "?";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.masked-cell:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent) !important;
+  color: var(--accent) !important;
+}
+
+.masked-cell:hover::after {
+  content: "";
+}
+
+.masked-pill {
+  filter: blur(5px);
+  user-select: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.masked-pill:hover {
+  filter: blur(0);
+}
+
+/* Spotted Highlight Cell */
+.spotted-highlight {
+  background: rgba(228, 87, 46, 0.25) !important;
+  outline: 2px solid #e4572e;
+  transform: scale(1.08);
+  font-weight: 800;
+  color: #e4572e !important;
+  z-index: 2;
+  box-shadow: 0 0 16px rgba(228, 87, 46, 0.4);
+}
+
+/* High-Yield Highlight Accents */
+.highlighted-val {
+  color: #e4572e !important;
+  font-weight: 800 !important;
+}
+
+.highlight-cell {
+  background: rgba(228, 87, 46, 0.08);
+}
+
+.highlight-col-head {
+  color: #e4572e !important;
+}
+
+.high-yield-row {
+  background: rgba(228, 87, 46, 0.06);
+}
+
+/* Series Cards Grid (Multiplication High-Yield Page 2) */
+.series-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.series-card {
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.series-header {
+  background: #1e293b;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.series-items-list {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.series-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.series-exp {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.series-val {
+  font-weight: 800;
+}
+
+/* Powers Cards Grid */
+.powers-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.power-group-card {
+  background: var(--panel-card);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.power-group-header {
+  background: var(--panel-border-subtle);
+  border-bottom: 1px solid var(--panel-border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.power-group-header h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.power-intro-pill {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.power-items-list {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.power-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-border-subtle);
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+
+.power-exp {
+  font-weight: 700;
+  color: #315cfd;
+}
+
+/* Split Tables */
+.fractions-two-col-grid,
+.cubes-split-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.fraction-label,
+.decimal-label,
+.percentage-label {
+  font-family: var(--font-mono);
+}
+
+.alt-pct {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.bold-fraction {
+  font-weight: 800;
+}
+
+/* Number System Formula Card (Page 6) */
+.formula-blueprint-card {
+  background: var(--panel-card);
+  border: 2px solid #315cfd;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  margin-top: 12px;
+}
+
+.formula-card-top {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.formula-card-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formula-hero-expression {
+  font-size: 2rem;
+  font-family: var(--font-mono);
+  font-weight: 900;
+  color: #e4572e;
+  margin: 10px 0 6px;
+}
+
+.formula-card-note {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.formula-rules-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.formula-rule-item {
+  background: var(--panel-border-subtle);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-border);
+}
+
+.rule-bullet-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.bullet-dot {
+  color: #315cfd;
+  font-weight: 900;
+}
+
+.rule-math-formula {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #315cfd;
+  margin-bottom: 6px;
+}
+
+.rule-explanation {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.formula-examples-box {
+  padding-top: 16px;
+}
+
+.examples-header {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-main);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.examples-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.example-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel-border-subtle);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+}
+
+.example-exp {
+  font-weight: 800;
+  color: #e4572e;
+}
+
+.example-calc {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   BLUEPRINT MODAL (Full 6-Page Cheat Sheet View)
+   ========================================================================== */
+
+.blueprint-modal-card {
+  max-width: 960px !important;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+  overflow: hidden;
+  text-align: left !important;
+}
+
+.blueprint-modal-header {
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--panel-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.blueprint-top-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(228, 87, 46, 0.15);
+  color: #e4572e;
+  border: 1px solid rgba(228, 87, 46, 0.3);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.blueprint-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1e3a8a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.blueprint-subtitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+}
+
+.blueprint-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.blueprint-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-border);
+  background: var(--panel-border-subtle);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.blueprint-action-btn:hover {
+  background: var(--panel-card);
+  border-color: var(--accent);
+}
+
+.blueprint-action-btn.active {
+  background: #e4572e;
+  color: #ffffff;
+  border-color: #e4572e;
+}
+
+.blueprint-action-btn.print-btn:hover {
+  background: #315cfd;
+  color: #ffffff;
+  border-color: #315cfd;
+}
+
+.blueprint-nav-tabs {
+  display: flex;
+  background: var(--panel-border-subtle);
+  border-bottom: 1px solid var(--panel-border);
+  padding: 6px 28px;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.blueprint-tab-btn {
+  padding: 8px 16px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.blueprint-tab-btn.active {
+  background: var(--panel-card);
+  color: #315cfd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.blueprint-sheet-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+}
+
+.blueprint-protocol-box {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-left: 4px solid #10b981;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.blueprint-block {
+  margin-bottom: 28px;
+}
+
+.blueprint-block-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #315cfd;
+}
+
+.blueprint-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  background: var(--panel-card);
+}
+
+.blueprint-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.blueprint-table-container th {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 10px 8px;
+  font-weight: 800;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.blueprint-table-container td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--panel-border);
+  border-right: 1px solid var(--panel-border);
+  font-family: var(--font-mono);
+}
+
+.bp-row-head,
+.bp-num {
+  font-weight: 800;
+  color: #315cfd;
+  background: var(--panel-border-subtle);
+}
+
+.bp-orange {
+  color: #e4572e !important;
+  font-weight: 800 !important;
+}
+
+.bp-orange-bg {
+  background: rgba(228, 87, 46, 0.08) !important;
+}
+
+.bp-orange-head {
+  background: #e4572e !important;
+  color: #ffffff !important;
+}
+
+.bp-masked {
+  background: var(--panel-border-subtle) !important;
+  color: transparent !important;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.bp-masked::after {
+  content: "?";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+.bp-masked-pill {
+  filter: blur(5px);
+  cursor: pointer;
+}
+
+.blueprint-multiples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.bp-series-card {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.bp-series-head {
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.bp-series-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bp-multi-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--panel-border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.blueprint-two-col-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.bp-group-head-row {
+  background: var(--panel-border-subtle);
+}
+
+.bp-intro-exp {
+  font-weight: 800;
+  color: #315cfd;
+}
+
+.bp-intro-val {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.bp-power-exp {
+  color: #315cfd;
+  font-weight: 700;
+}
+
+.bp-formula-box {
+  border: 2px solid #315cfd;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  background: var(--panel-card);
+}
+
+.bp-formula-head {
+  text-align: center;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.bp-formula-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.bp-formula-hero {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  color: #e4572e;
+  margin: 6px 0;
+}
+
+.bp-formula-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.bp-formula-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bp-rule-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.bp-rule-bullet {
+  color: #315cfd;
+  font-weight: 900;
+}
+
+.bp-rule-code {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: #315cfd;
+  font-size: 1.05rem;
+  margin-top: 2px;
+}
+
+.blueprint-modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--panel-border-subtle);
+  flex-wrap: wrap;
+}
+
+.blueprint-tip-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Print Styles for Blueprint */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .blueprint-modal-card,
+  .blueprint-modal-card * {
+    visibility: visible;
+  }
+  .blueprint-modal-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100% !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .blueprint-header-actions,
+  .blueprint-modal-footer,
+  .blueprint-nav-tabs {
+    display: none !important;
+  }
+}
+
+

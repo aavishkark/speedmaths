@@ -1,5 +1,5 @@
 import { getInitials } from "../hooks/useUserProfile";
-import { IconUser } from "./Icons";
+import { IconLightning, IconUser } from "./Icons";
 
 export function Header({
   topic,
@@ -12,6 +12,7 @@ export function Header({
   isAuthenticated,
   onOpenProfile,
   onOpenAuth,
+  onOpenBlueprint,
 }) {
   return (
     <header className="app-header">
@@ -28,6 +29,16 @@ export function Header({
       </div>
 
       <div className="header-controls">
+        <button
+          className="blueprint-header-btn"
+          onClick={onOpenBlueprint}
+          type="button"
+          title="Open CAT Speed Math Blueprint Cheat Sheet"
+        >
+          <IconLightning size={14} />
+          <span>Blueprint</span>
+        </button>
+
         <div className="fact-count-badge">
           <strong>{topic.facts.length}</strong>
           <span>facts</span>

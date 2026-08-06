@@ -9,6 +9,7 @@ import { QuizPanel } from "./components/QuizPanel";
 import { MemoryPanel } from "./components/MemoryPanel";
 import { SprintSummaryModal } from "./components/SprintSummaryModal";
 import { ProfileModal } from "./components/ProfileModal";
+import { AuthModal } from "./components/AuthModal";
 import { AchievementToast } from "./components/AchievementToast";
 import { Confetti } from "./components/Confetti";
 import { useSoundEffects } from "./hooks/useSoundEffects";
@@ -111,6 +112,10 @@ export const Home = () => {
     activeUser,
     levelInfo,
     newlyUnlocked,
+    isAuthenticated,
+    loginCloud,
+    registerCloud,
+    logout,
     dismissToast,
     switchUser,
     createUser,
@@ -124,6 +129,7 @@ export const Home = () => {
   } = useUserProfile();
 
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   // App drill state
   const [selectedTopicId, setSelectedTopicId] = useState(INITIAL_TOPIC_ID);
@@ -419,7 +425,9 @@ export const Home = () => {
 
       <Header
         activeUser={activeUser}
+        isAuthenticated={isAuthenticated}
         levelInfo={levelInfo}
+        onOpenAuth={() => setAuthModalOpen(true)}
         onOpenProfile={() => setProfileModalOpen(true)}
         onToggleSound={toggleSound}
         onToggleTheme={toggleTheme}
@@ -506,13 +514,24 @@ export const Home = () => {
           deleteUser={deleteUser}
           exportProfiles={exportProfiles}
           importProfiles={importProfiles}
+          isAuthenticated={isAuthenticated}
           levelInfo={levelInfo}
           onClose={() => setProfileModalOpen(false)}
+          onLogout={logout}
+          onOpenAuth={() => setAuthModalOpen(true)}
           profiles={profiles}
           switchUser={switchUser}
           updateActiveUser={updateActiveUser}
         />
       )}
+
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        onContinueGuest={() => setAuthModalOpen(false)}
+        onLogin={loginCloud}
+        onRegister={registerCloud}
+      />
     </div>
   );
 };

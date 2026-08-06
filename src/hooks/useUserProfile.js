@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { ACHIEVEMENTS, calculateLevelAndProgress } from "../data/achievements";
 import { EMPTY_STATS } from "./useSpeedMathStats";
+import {
+  authAPI,
+  clearAuthToken,
+  getAuthToken,
+  setAuthToken,
+  sprintAPI,
+  statsAPI,
+} from "../services/api";
 
 const INITIAL_STATS = {};
 const PROFILES_STORAGE_KEY = "speedmath-profiles-v2";
@@ -45,7 +53,8 @@ export const getInitials = (name = "Learner") => {
 
 const createDefaultProfile = (legacyStats = null) => ({
   id: "user-default",
-  name: "Aspirant",
+  name: "Guest Learner",
+  username: "guest",
   color: "#3b82f6",
   targetExam: "CAT (IIMs)",
   dailyGoal: 50,
@@ -100,6 +109,8 @@ const loadInitialProfiles = () => {
 export function useUserProfile() {
   const [data, setData] = useState(loadInitialProfiles);
   const [newlyUnlocked, setNewlyUnlocked] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCloudConnected, setIsCloudConnected] = useState(false);
 
   // Sync to localStorage
   useEffect(() => {
@@ -109,6 +120,61 @@ export function useUserProfile() {
       // ignore
     }
   }, [data]);
+
+  // Check auth token on initial load
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = getAuthToken();
+      if (!token) return;
+
+      try {
+        const res = await authAPI.getMe();
+        if (res.success && res.user) {
+          setIsAuthenticated(true);
+          setIsCloudConnected(true);
+
+          // Fetch cloud stats
+          try {
+            const statsRes = await statsAPI.getStats();
+            if (statsRes.success) {
+              setData((prev) => {
+                const cloudProfile = {
+                  id: res.user._id,
+                  name: res.user.name,
+                  username: res.user.username,
+                  color: res.user.color,
+                  targetExam: res.user.targetExam,
+                  dailyGoal: res.user.dailyGoal,
+                  dailyProgress: res.user.dailyProgress,
+                  dayStreak: res.user.dayStreak,
+                  lastActiveDate: res.user.lastActiveDate,
+                  xp: res.user.xp,
+                  unlockedAchievements: {},
+                  stats: statsRes.stats || {},
+                  sprintHistoryCount: 0,
+                };
+
+                const filtered = prev.profiles.filter((p) => p.id !== res.user._id);
+                return {
+                  profiles: [cloudProfile, ...filtered],
+                  activeId: cloudProfile.id,
+                };
+              });
+            }
+          } catch {
+            // Stats fetch optional
+          }
+        }
+      } catch (err) {
+        if (!err.isOffline) {
+          clearAuthToken();
+          setIsAuthenticated(false);
+        }
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   const activeUser =
     data.profiles.find((p) => p.id === data.activeId) ||
@@ -128,6 +194,7 @@ export function useUserProfile() {
     const newProfile = {
       id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name: name?.trim() || "New Learner",
+      username: `user_${Date.now().toString().slice(-4)}`,
       color: color || AVATAR_COLORS[0].value,
       targetExam: targetExam || TARGET_EXAMS[0],
       dailyGoal: Number(dailyGoal) || 50,
@@ -152,7 +219,8 @@ export function useUserProfile() {
     setData((prev) => {
       const nextProfiles = prev.profiles.map((profile) => {
         if (profile.id !== prev.activeId) return profile;
-        const updated = typeof updater === "function" ? updater(profile) : { ...profile, ...updater };
+        const updated =
+          typeof updater === "function" ? updater(profile) : { ...profile, ...updater };
         return updated;
       });
       return { ...prev, profiles: nextProfiles };
@@ -161,9 +229,7 @@ export function useUserProfile() {
 
   const deleteUser = useCallback((userId) => {
     setData((prev) => {
-      if (prev.profiles.length <= 1) {
-        return prev; // Don't delete last profile
-      }
+      if (prev.profiles.length <= 1) return prev;
       const nextProfiles = prev.profiles.filter((p) => p.id !== userId);
       const nextActiveId =
         prev.activeId === userId ? nextProfiles[0].id : prev.activeId;
@@ -174,9 +240,9 @@ export function useUserProfile() {
   // Helper to evaluate and unlock achievements
   const checkAchievements = useCallback((user) => {
     const today = getTodayString();
-    const todayCount = user.dailyProgress?.date === today ? user.dailyProgress.count : 0;
-    
-    // Calculate aggregate metrics across all topics
+    const todayCount =
+      user.dailyProgress?.date === today ? user.dailyProgress.count : 0;
+
     let totalAttempts = 0;
     let totalCorrect = 0;
     let bestStreak = 0;
@@ -216,7 +282,7 @@ export function useUserProfile() {
             newlyUnlockedList.push(ach);
           }
         } catch {
-          // ignore check error
+          // ignore
         }
       }
     });
@@ -228,6 +294,7 @@ export function useUserProfile() {
     };
   }, []);
 
+  // Record drill question attempt (Offline + Cloud Sync)
   const recordAttempt = useCallback(
     (isCorrect, fact, topicId) => {
       const today = getTodayString();
@@ -257,7 +324,6 @@ export function useUserProfile() {
           missedFactIds: nextMissed,
         };
 
-        // Daily Streak & Progress calculations
         let nextDayStreak = user.dayStreak || 1;
         let nextDailyProgress = user.dailyProgress || { date: today, count: 0 };
 
@@ -275,7 +341,6 @@ export function useUserProfile() {
           };
         }
 
-        // XP Calculation: 10 XP base for correct, 15 XP bonus for streak milestones
         let earnedXp = isCorrect ? 10 : 1;
         if (isCorrect && nextStreak > 0 && nextStreak % 5 === 0) {
           earnedXp += 15;
@@ -306,10 +371,24 @@ export function useUserProfile() {
           unlockedAchievements: updatedAchievements,
         };
       });
+
+      // Background API sync if logged in
+      if (getAuthToken()) {
+        statsAPI
+          .recordAttempt({
+            topicId,
+            isCorrect,
+            factId: fact.id,
+          })
+          .catch(() => {
+            // Silently fallback to local storage
+          });
+      }
     },
     [checkAchievements, updateActiveUser],
   );
 
+  // Record sprint result (Offline + Cloud Sync)
   const recordSprintResult = useCallback(
     (topicId, duration, correctCount) => {
       updateActiveUser((user) => {
@@ -351,9 +430,120 @@ export function useUserProfile() {
           unlockedAchievements: updatedAchievements,
         };
       });
+
+      // Background API sync if logged in
+      if (getAuthToken()) {
+        sprintAPI
+          .submitSprint({
+            topicId,
+            duration,
+            score: correctCount,
+            attempts: correctCount,
+          })
+          .catch(() => {
+            // Silently fallback to local storage
+          });
+      }
     },
     [checkAchievements, updateActiveUser],
   );
+
+  // Cloud Sign In
+  const loginCloud = useCallback(async ({ username, password }) => {
+    const res = await authAPI.login({ username, password });
+    if (res.token && res.user) {
+      setAuthToken(res.token);
+      setIsAuthenticated(true);
+      setIsCloudConnected(true);
+
+      // Fetch cloud stats
+      let cloudStats = {};
+      try {
+        const statsRes = await statsAPI.getStats();
+        if (statsRes.success) {
+          cloudStats = statsRes.stats || {};
+        }
+      } catch {
+        // ignore
+      }
+
+      const cloudProfile = {
+        id: res.user._id,
+        name: res.user.name,
+        username: res.user.username,
+        color: res.user.color,
+        targetExam: res.user.targetExam,
+        dailyGoal: res.user.dailyGoal,
+        dailyProgress: res.user.dailyProgress,
+        dayStreak: res.user.dayStreak,
+        lastActiveDate: res.user.lastActiveDate,
+        xp: res.user.xp,
+        unlockedAchievements: {},
+        stats: cloudStats,
+        sprintHistoryCount: 0,
+      };
+
+      setData((prev) => {
+        const filtered = prev.profiles.filter((p) => p.id !== res.user._id);
+        return {
+          profiles: [cloudProfile, ...filtered],
+          activeId: cloudProfile.id,
+        };
+      });
+
+      return res.user;
+    }
+    throw new Error("Invalid response from server");
+  }, []);
+
+  // Cloud Registration
+  const registerCloud = useCallback(async (payload) => {
+    const res = await authAPI.register(payload);
+    if (res.token && res.user) {
+      setAuthToken(res.token);
+      setIsAuthenticated(true);
+      setIsCloudConnected(true);
+
+      const cloudProfile = {
+        id: res.user._id,
+        name: res.user.name,
+        username: res.user.username,
+        color: res.user.color,
+        targetExam: res.user.targetExam,
+        dailyGoal: res.user.dailyGoal,
+        dailyProgress: res.user.dailyProgress,
+        dayStreak: res.user.dayStreak,
+        lastActiveDate: res.user.lastActiveDate,
+        xp: res.user.xp,
+        unlockedAchievements: {},
+        stats: INITIAL_STATS,
+        sprintHistoryCount: 0,
+      };
+
+      setData((prev) => {
+        const filtered = prev.profiles.filter((p) => p.id !== res.user._id);
+        return {
+          profiles: [cloudProfile, ...filtered],
+          activeId: cloudProfile.id,
+        };
+      });
+
+      return res.user;
+    }
+    throw new Error("Failed to register account");
+  }, []);
+
+  // Log out
+  const logout = useCallback(() => {
+    clearAuthToken();
+    setIsAuthenticated(false);
+    setIsCloudConnected(false);
+    const guestProfile = createDefaultProfile();
+    setData({
+      profiles: [guestProfile],
+      activeId: guestProfile.id,
+    });
+  }, []);
 
   const resetTopicStats = useCallback(
     (topicId) => {
@@ -364,6 +554,10 @@ export function useUserProfile() {
           [topicId]: EMPTY_STATS,
         },
       }));
+
+      if (getAuthToken()) {
+        statsAPI.resetTopic(topicId).catch(() => {});
+      }
     },
     [updateActiveUser],
   );
@@ -395,6 +589,11 @@ export function useUserProfile() {
     activeUserId: data.activeId,
     levelInfo,
     newlyUnlocked,
+    isAuthenticated,
+    isCloudConnected,
+    loginCloud,
+    registerCloud,
+    logout,
     dismissToast,
     switchUser,
     createUser,

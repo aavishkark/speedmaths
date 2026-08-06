@@ -1,4 +1,5 @@
 import { getInitials } from "../hooks/useUserProfile";
+import { IconUser } from "./Icons";
 
 export function Header({
   topic,
@@ -8,7 +9,9 @@ export function Header({
   onToggleSound,
   activeUser,
   levelInfo,
+  isAuthenticated,
   onOpenProfile,
+  onOpenAuth,
 }) {
   return (
     <header className="app-header">
@@ -30,8 +33,8 @@ export function Header({
           <span>facts</span>
         </div>
 
-        {/* User Profile Trigger Button */}
-        {activeUser && (
+        {/* User Profile or Sign In Button */}
+        {isAuthenticated ? (
           <button
             className="user-profile-pill-btn"
             onClick={onOpenProfile}
@@ -49,6 +52,16 @@ export function Header({
               <span className="user-pill-name">{activeUser.name}</span>
               <span className="user-pill-level">Lvl {levelInfo?.level || 1}</span>
             </div>
+          </button>
+        ) : (
+          <button
+            className="auth-header-btn"
+            onClick={onOpenAuth}
+            type="button"
+            title="Sign in or register account"
+          >
+            <IconUser size={15} />
+            <span>Sign In</span>
           </button>
         )}
 

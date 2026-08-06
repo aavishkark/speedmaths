@@ -48,6 +48,9 @@ export function ProfileModal({
   profiles,
   switchUser,
   updateActiveUser,
+  isAuthenticated,
+  onLogout,
+  onOpenAuth,
 }) {
   const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'achievements' | 'accounts'
   const [isCreatingUser, setIsCreatingUser] = useState(false);
@@ -172,20 +175,55 @@ export function ProfileModal({
               <div className="profile-name-row">
                 <h3>{activeUser.name}</h3>
                 <span className="exam-target-chip">{activeUser.targetExam}</span>
+                {isAuthenticated ? (
+                  <span className="cloud-status-chip online" title="Synchronized with cloud database">
+                    Cloud Synced
+                  </span>
+                ) : (
+                  <span className="cloud-status-chip offline" title="Drills saved locally on this browser">
+                    Guest Mode
+                  </span>
+                )}
               </div>
               <p className="profile-rank-subtitle">
                 Level {levelInfo.level} • {levelInfo.rank}
               </p>
             </div>
 
-            <button
-              className="close-modal-icon-btn"
-              onClick={onClose}
-              type="button"
-              aria-label="Close modal"
-            >
-              ×
-            </button>
+            <div className="profile-header-actions">
+              {isAuthenticated ? (
+                <button
+                  className="auth-header-btn logout"
+                  onClick={() => {
+                    onLogout();
+                    onClose();
+                  }}
+                  type="button"
+                >
+                  Log Out
+                </button>
+              ) : (
+                <button
+                  className="auth-header-btn login"
+                  onClick={() => {
+                    onClose();
+                    onOpenAuth();
+                  }}
+                  type="button"
+                >
+                  Sign In
+                </button>
+              )}
+
+              <button
+                className="close-modal-icon-btn"
+                onClick={onClose}
+                type="button"
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+            </div>
           </div>
 
           {/* XP Progress Bar */}

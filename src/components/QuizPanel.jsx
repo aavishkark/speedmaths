@@ -28,7 +28,19 @@ export function QuizPanel({
   }, [fact, mode, sprintActive]);
 
   if (!fact) {
-    return <section className="quiz-panel empty">Loading drill facts...</section>;
+    return (
+      <section className="quiz-panel empty">
+        <p>Loading drill facts...</p>
+        <button
+          className="ghost-action"
+          onClick={() => onNext()}
+          style={{ marginTop: 12 }}
+          type="button"
+        >
+          Load Question ↵
+        </button>
+      </section>
+    );
   }
 
   const sprintLocked = mode === "sprint" && !sprintActive;
@@ -122,7 +134,7 @@ export function QuizPanel({
             {mode !== "sprint" && (
               <button
                 className="ghost-action"
-                onClick={onNext}
+                onClick={() => onNext()}
                 type="button"
                 title="Skip to next question (Esc)"
               >

@@ -177,15 +177,22 @@ export const Home = () => {
   }, [reviewIds, topicFacts]);
 
   const rollQuestion = useCallback(
-    (sourceFacts = availableFacts) => {
+    (sourceFacts) => {
+      const targetFacts =
+        Array.isArray(sourceFacts) && sourceFacts.length > 0
+          ? sourceFacts
+          : availableFacts.length > 0
+            ? availableFacts
+            : topicFacts;
+
       setCurrentFact((previousFact) =>
-        pickRandomFact(sourceFacts, previousFact?.id),
+        pickRandomFact(targetFacts, previousFact?.id),
       );
       setDirection(pickDirection(mode));
       setAnswer("");
       setFeedback(null);
     },
-    [availableFacts, mode],
+    [availableFacts, mode, topicFacts],
   );
 
   const resetDrillState = useCallback((nextTopicId, nextMode) => {
@@ -460,7 +467,7 @@ export const Home = () => {
               isReviewing={isReviewing}
               mode={mode}
               onAnswerChange={setAnswer}
-              onNext={rollQuestion}
+              onNext={() => rollQuestion()}
               onStartSprint={startSprint}
               onSubmit={handleSubmit}
               sprintActive={sprintActive}
